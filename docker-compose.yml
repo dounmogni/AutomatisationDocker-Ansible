@@ -2,27 +2,39 @@ version: '3'
 services:
   master:
     build:
-      context: .
-      dockerfile: ./master.Dockerfile
-    working_dir: /root/playbooks
+      context: .  # Utilise le répertoire actuel comme contexte de construction
+      dockerfile: ./master.Dockerfile  # Chemin vers le Dockerfile spécifique
+    working_dir: /root/playbooks  # Le répertoire de travail dans le conteneur
     volumes:
-      - /c/repos/ansible/playbooks:/root/playbooks
-      - /c/repos/ansible/config:/etc/ansible
-    command: tail -f /dev/null
-    
+      - /home/vagrant/playbooks:/home/ansadmin/playbooks  # Montage du volume
+    command: tail -f /dev/null  # Maintient le conteneur actif
+    #user: ansible  # Exécution en tant qu'utilisateur 'ansible'
+
   web:
     build:
-      context: .
-      dockerfile: ./server.Dockerfile
+      context: .  # Contexte de construction
+      dockerfile: ./server.Dockerfile  # Dockerfile pour ce service
+    volumes:
+      - /home/vagrant/playbooks:/home/ansadmin/playbooks  # Montage du volume
+    #command: tail -f /dev/null
+    #user: ansible  # Exécution en tant qu'utilisateur 'ansible'
 
   db:
     build:
-      context: .
-      dockerfile: ./server.Dockerfile
+      context: .  # Contexte de construction
+      dockerfile: ./server.Dockerfile  # Dockerfile pour ce service
+    volumes:
+      - /home/vagrant/playbooks:/home/ansadmin/playbooks  # Montage du volume
+    #command: tail -f /dev/null
+    #user: ansible  # Exécution en tant qu'utilisateur 'ansible'
 
   lb:
     build:
-      context: .
-      dockerfile: ./server.Dockerfile
+      context: .  # Contexte de construction
+      dockerfile: ./server.Dockerfile  # Dockerfile pour ce service
+    volumes:
+      - /home/vagrant/playbooks:/home/ansadmin/playbooks  # Montage du volume
     ports: 
-      - 8080:80
+      - 8080:80  # Redirection du port 8080 de l'hôte vers le port 80 du conteneur
+    #command: tail -f /dev/null
+    #user: ansible  # Exécution en tant qu'utilisateur 'ansible'
